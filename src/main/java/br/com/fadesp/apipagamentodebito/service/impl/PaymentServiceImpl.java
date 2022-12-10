@@ -75,4 +75,18 @@ public class PaymentServiceImpl implements PaymentService {
         return this.mapper.responseToDTOPayment(this.repository.save(pagamento));
     }
 
+    @Override
+    public void delete(Long id) {
+        Payment pagamento = repository
+                .findById(id)
+                .orElseThrow(() -> new NotFoundException("Pagamento não encontrado."));
+
+        if (pagamento.getSituacao() != SituacaoEnum.PENDENTE) {
+            throw new BadRequestException(
+                    "Falha ao deletar pagamento, pois o mesmo esta o status de processamento como " + pagamento.getSituacao());
+        }
+
+        repository.deleteById(id);
+    }
+
 }

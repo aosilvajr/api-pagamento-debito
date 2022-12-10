@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,6 +23,7 @@ import br.com.fadesp.apipagamentodebito.domain.enums.SituacaoEnum;
 import br.com.fadesp.apipagamentodebito.service.PaymentService;
 import br.com.fadesp.apipagamentodebito.utils.Properties;
 import br.com.fadesp.apipagamentodebito.utils.ResponseRest;
+import io.swagger.v3.oas.annotations.Operation;
 
 @RestController
 @RequestMapping("/v1/api/payment")
@@ -34,6 +36,7 @@ public class PaymentController {
     }
 
     @GetMapping
+    @Operation(description = "Listar todos os pagamentos recebidos com filtros de busca")
     public ResponseEntity<ResponseRest<List<ResponsePayment>>> list(
             @RequestParam(required = false) Long id,
             @RequestParam(required = false) String cpfCnpj,
@@ -45,6 +48,7 @@ public class PaymentController {
     }
 
     @PostMapping
+    @Operation(description = "Recebe um pagamento")
     public ResponseEntity<ResponseRest<ResponsePayment>> create(@RequestBody @Valid RequestPayment payment) {
         try {
             ResponsePayment pagamento = service.create(payment);
@@ -60,6 +64,7 @@ public class PaymentController {
     }
 
     @PutMapping("/{id}")
+    @Operation(description = "Atualiza o status de um pagamento")
     public ResponseEntity<ResponseRest<ResponsePayment>> update(@PathVariable Long id,
             @RequestBody SituacaoEnum situacao) {
         try {
@@ -70,6 +75,22 @@ public class PaymentController {
         } catch (Exception e) {
             String exception = e.getMessage();
             Properties properties = PagamentoDebitoCode.CAD_SERVICO_ERROR_A.getProperties();
+
+            return new ResponseEntity<>(new ResponseRest<>(null, properties, exception), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    @Operation(description = "Deletar um pagamento com status pendente de processamento")
+    public ResponseEntity<ResponseRest<Void>> delete(@PathVariable Long id) {
+        try {
+            this.service.delete(id);
+            Properties properties = PagamentoDebitoCode.CAD_SERVICO_SUCESSO_A.getProperties();
+
+            return ResponseEntity.ok(new ResponseRest<>(null, properties, null));
+        } catch (Exception e) {
+            String exception = e.getMessage();
+            Properties properties = PagamentoDebitoCode.CAD_SERVICO_ERROR_E.getProperties();
 
             return new ResponseEntity<>(new ResponseRest<>(null, properties, exception), HttpStatus.BAD_REQUEST);
         }

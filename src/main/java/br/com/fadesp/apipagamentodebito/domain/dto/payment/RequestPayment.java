@@ -15,10 +15,9 @@ public class RequestPayment {
     @NotEmpty(message = "não pode ser vazio")
     private String cpfCnpj;
 
-    @NotNull
+    @NotNull(message = "não pode ser vazio")
     private MetodoPagamentoEnum metodoPagamento;
 
-    @NotEmpty(message = "não pode ser vazio")
     private String numeroCartao;
 
     @NotNull(message = "não pode ser vazio")

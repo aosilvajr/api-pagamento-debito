@@ -14,4 +14,6 @@ public interface PaymentService {
 
     ResponsePayment update(Long id, SituacaoEnum situacao);
 
+    void delete(Long id);
+
 }
