@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import br.com.fadesp.apipagamentodebito.domain.dto.payment.RequestPayment;
 import br.com.fadesp.apipagamentodebito.domain.dto.payment.ResponsePayment;
 import br.com.fadesp.apipagamentodebito.domain.enums.SituacaoEnum;
 import br.com.fadesp.apipagamentodebito.domain.mapper.PagamentoMapper;
@@ -33,6 +34,12 @@ public class PaymentServiceImpl implements PaymentService {
                 .stream()
                 .map(mapper::responseToDTOPayment)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public ResponsePayment create(RequestPayment payment) {
+        Payment pagamento = mapper.requestToModelPayment(payment);
+        return mapper.responseToDTOPayment(repository.save(pagamento));
     }
 
     @Override
