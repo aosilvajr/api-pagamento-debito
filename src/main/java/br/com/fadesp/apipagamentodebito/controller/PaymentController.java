@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.fadesp.apipagamentodebito.domain.PagamentoDebitoCode;
@@ -33,8 +34,11 @@ public class PaymentController {
     }
 
     @GetMapping
-    public ResponseEntity<ResponseRest<List<ResponsePayment>>> list() {
-        List<ResponsePayment> payments = this.service.list();
+    public ResponseEntity<ResponseRest<List<ResponsePayment>>> list(
+            @RequestParam(required = false) Long id,
+            @RequestParam(required = false) String cpfCnpj,
+            @RequestParam(required = false) SituacaoEnum situacao) {
+        List<ResponsePayment> payments = this.service.list(id, cpfCnpj, situacao);
 
         return ResponseEntity.ok(
                 new ResponseRest<>(payments, PagamentoDebitoCode.BUSCA_GERAL_SUCESSO.getProperties(), null));

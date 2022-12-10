@@ -2,9 +2,9 @@ package br.com.fadesp.apipagamentodebito.domain.enums;
 
 public enum SituacaoEnum {
 
-    PENDENTE("Pendente"),
-    SUCESSO("Sucesso"),
-    FALHA("Falha");
+    PENDENTE("PENDENTE"),
+    SUCESSO("SUCESSO"),
+    FALHA("FALHA");
 
     private String value;
 

@@ -1,6 +1,7 @@
 package br.com.fadesp.apipagamentodebito.service.impl;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -27,8 +28,8 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public List<ResponsePayment> list() {
-        List<Payment> payment = this.repository.findAll();
+    public List<ResponsePayment> list(Long id, String cpfCnpj, SituacaoEnum situacao) {
+        List<Payment> payment = this.repository.findByOrListAll(id, cpfCnpj, Objects.toString(situacao, null));
 
         return payment
                 .stream()

@@ -8,7 +8,7 @@ import br.com.fadesp.apipagamentodebito.domain.enums.SituacaoEnum;
 
 public interface PaymentService {
 
-    List<ResponsePayment> list();
+    List<ResponsePayment> list(Long id, String cpfCnpj, SituacaoEnum situacao);
 
     ResponsePayment create(RequestPayment payment);
 
