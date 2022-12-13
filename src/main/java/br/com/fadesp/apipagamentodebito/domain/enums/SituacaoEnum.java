@@ -1,5 +1,7 @@
 package br.com.fadesp.apipagamentodebito.domain.enums;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public enum SituacaoEnum {
 
     PENDENTE("PENDENTE"),
@@ -14,6 +16,17 @@ public enum SituacaoEnum {
 
     public String getValue() {
         return value;
+    }
+
+    @JsonProperty
+    public static SituacaoEnum getSituacaoFromCode(String value) {
+        for (SituacaoEnum situacao : SituacaoEnum.values()) {
+            if (situacao.getValue().equals(value)) {
+                return situacao;
+            }
+        }
+
+        return null;
     }
 
 }

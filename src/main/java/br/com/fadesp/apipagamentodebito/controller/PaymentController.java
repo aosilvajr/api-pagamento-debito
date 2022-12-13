@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.fadesp.apipagamentodebito.domain.PagamentoDebitoCode;
 import br.com.fadesp.apipagamentodebito.domain.dto.payment.RequestPayment;
+import br.com.fadesp.apipagamentodebito.domain.dto.payment.RequestUpdatePayment;
 import br.com.fadesp.apipagamentodebito.domain.dto.payment.ResponsePayment;
 import br.com.fadesp.apipagamentodebito.domain.enums.SituacaoEnum;
 import br.com.fadesp.apipagamentodebito.service.PaymentService;
@@ -66,9 +67,9 @@ public class PaymentController {
     @PutMapping("/{id}")
     @Operation(description = "Atualiza o status de um pagamento")
     public ResponseEntity<ResponseRest<ResponsePayment>> update(@PathVariable Long id,
-            @RequestBody SituacaoEnum situacao) {
+            @RequestBody RequestUpdatePayment payment) {
         try {
-            ResponsePayment pagamento = this.service.update(id, situacao);
+            ResponsePayment pagamento = this.service.update(id, payment);
             Properties properties = PagamentoDebitoCode.CAD_SERVICO_SUCESSO_A.getProperties();
 
             return ResponseEntity.ok(new ResponseRest<>(pagamento, properties, null));
